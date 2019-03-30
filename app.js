@@ -1,7 +1,6 @@
 var express = require("express"),
 mongoose = require("mongoose"),
 passport = require("passport"),
-paypal = require("paypal-rest-sdk"),
 bodyParser = require("body-parser"),
 passportLocal = require("passport-local"),
 methodOverride = require("method-override"),

@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "brain.js": "^1.6.1",
     "connect-flash": "^0.1.1",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
@@ -22,8 +23,7 @@
     "mongoose": "^5.4.10",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^5.0.1",
-    "paypal-rest-sdk": "^1.8.1"
+    "passport-local-mongoose": "^5.0.1"
   },
   "bugs": {
     "url": "https://github.com/jlokhande46/Artisan-Ecommerce/issues"
