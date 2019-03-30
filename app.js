@@ -22,9 +22,9 @@ User = require("./models/user");
 // Inventory = require("./models/event");
 
 // Routes
-// var productRoutes = require("./routes/products"),
+var productRoutes = require("./routes/products"),
 // reviewRoutes = require("./routes/reviews"),
-var indexRoutes = require("./routes/index");
+indexRoutes = require("./routes/index");
 // feedbackRoutes = require("./routes/feedback"),
 // eventRoutes = require("./routes/events"),
 // studentRoutes = require("./routes/student"),
@@ -45,9 +45,9 @@ app.use(require("express-session")({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-// passport.use(new passportLocal(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+passport.use(new passportLocal(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
@@ -58,6 +58,7 @@ app.use(function(req, res, next) {
 
 // Routing
 app.use(indexRoutes);
+// app.use("/products", productRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("KalaMart Server is Active!");

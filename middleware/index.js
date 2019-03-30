@@ -1,5 +1,5 @@
-var Product = require("../models/Product");
-var Review = require("../models/Review");
+var Product = require("../models/product");
+var Review = require("../models/review");
 var middlewareObj = {};
 
 middlewareObj.checkProductOwnership = function(req, res, next) {
