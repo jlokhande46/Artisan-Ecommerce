@@ -3,11 +3,10 @@ var router = express.Router({mergeParams: true});
 var passport = require("passport");
 var User = require("../models/user");
 const nodemailer = require('nodemailer');
-var API_KEY = '0957fbba29c24da02e4210e57693ac47-e51d0a44-998857c7';
-var DOMAIN = 'sandbox0b88e47780fb42749404b56d02dc91d5.mailgun.org';
-var mailgun = require('mailgun-js')({apiKey: API_KEY, domain: DOMAIN});
-
-
+var api_key = '6a36a05f9593403333259f181737fc44-e51d0a44-03cf5ac7';
+var domain = 'sandbox63f67ddecd1b43cebb37c6f8a0b4bd2a.mailgun.org';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+ 
 
 
 
@@ -33,12 +32,16 @@ router.get("/register", function(req, res) {
 router.post("/register",function(req,res){
     let email = req.body.email;
     let username = req.body.username;
-const data = {
-  from: 'jerinthomas1404@gmail.com',
+  var data = {
+  from: 'seacomp17@gmail.com',
   to: email,
-  subject: 'SIGN UP',
-  text: 'HEY !! KEEP IT UP!'+username
+  subject: 'SignIn',
+  text: 'GOOD JOB'
 };
+ 
+mailgun.messages().send(data, function (error, body) {
+  console.log(body);
+});
 
 mailgun.messages().send(data, (error, body) => {
   console.log(error);

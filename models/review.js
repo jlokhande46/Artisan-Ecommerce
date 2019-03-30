@@ -12,4 +12,4 @@ var reviewSchema = mongoose.Schema({
     created: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model("Comment", reviewSchema);
+module.exports = mongoose.model("Review", reviewSchema);

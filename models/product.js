@@ -7,13 +7,15 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
-  designer: {
-      type: String,
-      required: true
-  },
+  author: {
+        id: {
+            type: mongoose.Schema.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
   price: {
     type: Number,
-    required: true
   },
   description: {
     type: String,
@@ -25,8 +27,13 @@ const productSchema = new Schema({
   },
   rating: {
     type: Number,
-    required: true
   },
+  reviews: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "Review"
+        }
+    ],
   created: {type: Date, default: Date.now}
 });
 

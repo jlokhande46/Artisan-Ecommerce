@@ -14,8 +14,8 @@ mongoose.set('useFindAndModify', false);
 
 // Models
 var Product = require("./models/product"),
-User = require("./models/user");
-// Student = require("./models/student"),
+User = require("./models/user"),
+Review = require("./models/review");
 // Comment = require("./models/comment"),
 // Feedback = require("./models/feedback"),
 // Event = require("./models/event"),
@@ -58,7 +58,7 @@ app.use(function(req, res, next) {
 
 // Routing
 app.use(indexRoutes);
-// app.use("/products", productRoutes);
+app.use("/products", productRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("KalaMart Server is Active!");
