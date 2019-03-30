@@ -12,7 +12,17 @@
                         <input class="form-control form-control-lg" type="text" name="imageUrl" placeholder="Image">
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" type="number" min="100" max="50000" step="100" name="price" placeholder="Price">
+                        <select class="form-control form-control-lg" id="category" type="text" name="category" placeholder="Choose a category">
+                            <option value="sarees">Sarees</option>
+                            <option value="jewellery">Jewellery</option>
+                            <option value="painting">Painting</option>
+                            <option value="teaset">Tea Set</option>
+                            <option value="shawls">Shawls</option>
+                            <option value="home">Home & Living</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" type="number" name="price" placeholder="Price">
                     </div>
                     <div class="form-group">
                         <input class="form-control form-control-lg" type="text" name="description" placeholder="Description">

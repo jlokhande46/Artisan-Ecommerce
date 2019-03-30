@@ -11,7 +11,7 @@ router.get("/", function(req, res) {
             req.redirect("/");
         }
         else {
-            res.render("products/index", {Products: allProducts});
+            res.render("products/index", {products: allProducts});
         }
     });
 });
@@ -20,14 +20,14 @@ router.get("/", function(req, res) {
 router.post("/", middleware.isLoggedIn, function(req, res) {
     var title = req.body.title;
     var imageUrl = req.body.imageUrl;
-    console.log(req.body.price);
-    // var price = req.body.price;
+    var category = req.body.category;
+    var price = req.body.price;
     var desc = req.body.description;
     var author = {
         id: req.user._id,
         username: req.user.username
     };
-    var newProduct = {title: title, imageUrl: imageUrl, description: desc, author: author};
+    var newProduct = {title: title, imageUrl: imageUrl, category: category, price: price, description: desc, author: author};
     Product.create(newProduct, function(err, newDesg) {
         if (err) {
             // req.flash("error", "Product could not be added!");
@@ -47,11 +47,11 @@ router.get("/new", middleware.isLoggedIn, function(req, res) {
 
 // Show Product Info
 router.get("/:id", function(req, res) {
-    Product.findById(req.params.id).populate("reviews").exec(function(err, foundProduct) {
+    Product.findById(req.params.id).populate("reviews").exec(function(err, foundProduct, allProducts) {
         if (err) {
             console.log(err);
         } else {
-            res.render("products/show", {Product: foundProduct});
+            res.render("products/show", {product: foundProduct});
         }    
     });
 });
@@ -63,7 +63,7 @@ router.get("/:id/edit", middleware.checkProductOwnership, function(req, res) {
             req.flash("error", "Product not found!");
             res.redirect("back");
         } else {
-            res.render("products/edit", {Product: foundProduct});
+            res.render("products/edit", {product: foundProduct});
         }
     });
 });

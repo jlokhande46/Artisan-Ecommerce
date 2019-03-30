@@ -2,13 +2,17 @@ var express = require("express");
 var router = express.Router({mergeParams: true});
 var passport = require("passport");
 var User = require("../models/user");
-const nodemailer = require('nodemailer');
-var api_key = '6a36a05f9593403333259f181737fc44-e51d0a44-03cf5ac7';
-var domain = 'sandbox63f67ddecd1b43cebb37c6f8a0b4bd2a.mailgun.org';
-var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
- 
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-
+var options = {
+  auth: {
+    api_user: 'kalamart',
+    api_key: process.env.SENDGRID_API_KEY
+  }
+};
+var client = nodemailer.createTransport(sgTransport(options));
 
 router.get("/", function(req, res) {
     res.render("home");
@@ -30,21 +34,24 @@ router.get("/register", function(req, res) {
 });
 
 router.post("/register",function(req,res){
-    let email = req.body.email;
+    let ema_il = req.body.email;
     let username = req.body.username;
-  var data = {
-  from: 'seacomp17@gmail.com',
-  to: email,
-  subject: 'SignIn',
-  text: 'GOOD JOB'
-};
  
-mailgun.messages().send(data, function (error, body) {
-  console.log(body);
-});
+var email = {
+  from: 'seacomp17@gmail.com',
+  to: ema_il,
+  subject: 'Hello',
+  text: 'Hello world',
+  html: '<b>Hello world</b>'
+};
 
-mailgun.messages().send(data, (error, body) => {
-  console.log(error);
+client.sendMail(email, function(err, info){
+    if (err ){
+      console.log(err);
+    }
+    else {
+      console.log('Message sent: ' + info.response);
+    }
 });
     var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, user) {
@@ -79,6 +86,9 @@ router.get("/checkout", function(req, res) {
 
 router.get("/contact", function(req, res) {
     res.render("contact");
+})
+router.get("/vids", function(req, res) {
+    res.render("vids");
 })
 
 module.exports = router;

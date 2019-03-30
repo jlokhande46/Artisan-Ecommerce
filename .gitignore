@@ -1,2 +1,4 @@
 node_modules/
-mongod
+mongodsendgrid.env
+sendgrid.env
+sendgrid.env
