@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router({mergeParams: true});
 var Product = require("../models/product");
 var middleware = require("../middleware");
-
 // Show Products
 router.get("/", function(req, res) {
     Product.find({}, function(err, allProducts) {
@@ -30,9 +29,8 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     var newProduct = {title: title, imageUrl: imageUrl, category: category, price: price, description: desc, author: author};
     Product.create(newProduct, function(err, newDesg) {
         if (err) {
-            // req.flash("error", "Product could not be added!");
-            // res.redirect("/products/new");
-            console.log(err);
+            req.flash("error", "Product could not be added!");
+            res.redirect("/products/new");
         } else {
             req.flash("success", "Product added successfully!");
             res.redirect("/products");
@@ -44,17 +42,32 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 router.get("/new", middleware.isLoggedIn, function(req, res) {
     res.render("products/new");
 });
-
 // Show Product Info
-router.get("/:id", function(req, res) {
-    Product.findById(req.params.id).populate("reviews").exec(function(err, foundProduct, allProducts) {
+router.get("/:id",function(req, res) {
+    Product.findById(req.params.id).populate("reviews").exec(function(err, foundProduct){
         if (err) {
             console.log(err);
         } else {
-            res.render("products/show", {product: foundProduct});
+            var cat=foundProduct.category
+            Product.find({category: cat}).exec(function(err, catProducts) {
+        if (err) {
+            console.log("Not working");
+        }
+        else{
+            console.log(catProducts);
+            var items={product:foundProduct, categ:catProducts}
+            res.render("products/show", {items: items} );
+        }
+    })
+            // res.render("products/show", {product: foundProduct, cate: catProducts});
         }    
     });
 });
+//POST
+// router.post('/:id',function(req,res,next){
+//     currentUser.
+// });
+
 
 // Edit
 router.get("/:id/edit", middleware.checkProductOwnership, function(req, res) {
@@ -94,5 +107,7 @@ router.delete("/:id", middleware.checkProductOwnership, function(req, res) {
         }
     });
 });
+
+
 
 module.exports = router;

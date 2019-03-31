@@ -29,6 +29,7 @@ function googleTranslateElementInit() {
 </script>
 
 <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
   </head>
   <body>
@@ -68,6 +69,7 @@ function googleTranslateElementInit() {
                     <li><a href="/register">Register</a></li>
                 <% } else { %>
                     <li><a href="/">Signed in as <%= currentUser.username %></a></li>
+                    <li><a href="/profiles">Profile</a></li>
                     <li><a href="/logout">Logout</a></li>
                 <% } %>
               </ul>
@@ -75,9 +77,8 @@ function googleTranslateElementInit() {
           </div>
           <div class="icons">
             <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
-            <a href="cart.html" class="icons-btn d-inline-block bag">
+            <a href="/cart" class="icons-btn d-inline-block bag">
               <span class="icon-shopping-bag"></span>
-              <span class="number">2</span>
             </a>
             <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span class="icon-menu"></span></a>
           </div>

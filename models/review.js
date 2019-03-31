@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 
 var reviewSchema = mongoose.Schema({
     text: String,
+    rating: Number,
     author: {
         id: {
             type: mongoose.Schema.ObjectId,

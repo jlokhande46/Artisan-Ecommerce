@@ -1,48 +1,38 @@
 var express = require("express");
 var router = express.Router({mergeParams: true});
 var Product = require("../models/product");
+var Profile = require("../models/profile");
 var Review = require("../models/review");
 var middleware = require("../middleware");
 
-// Comments
+// reviews
 router.get("/new", middleware.isLoggedIn, function(req, res) {
-    product.findById(req.params.id, function(err, product) {
+    Product.findById(req.params.id, function(err, product) {
         if(err) {
             console.log(err);
         } else {
-            res.render("comments/new", {product: product});
+            res.render("reviews/new", {product: product});
         }
     });
 });
-
-router.get("/new1", middleware.isLoggedIn, function(req, res) {
-    Events.findById(req.params.id, function(err, event) {
-        if(err) {
-            console.log(err);
-        } else {
-            res.render("comments/new1", {event : event});
-        }
-    });
-});
-
 
 router.post("/", function(req, res) {
-    product.findById(req.params.id, function(err, product) {
+    Product.findById(req.params.id, function(err, product) {
         if(err) {
             console.log(err);
             res.redirect("/products");
         } else {
-            Comment.create(req.body.comment, function(err, comment) {
+            Review.create(req.body.review, function(err, review) {
                 if (err) {
                     console.log(err);
                 } else {
-                    // Add Username to Comment
-                    comment.author.id = req.user._id;
-                    comment.author.username = req.user.username;
-                    comment.save();
-                    product.comments.push(comment);
+                    // Add Username to review
+                    review.author.id = req.user._id;
+                    review.author.username = req.user.username;
+                    review.save();
+                    product.reviews.push(review);
                     product.save();
-                    req.flash("success", "Comment added successfully!");
+                    req.flash("success", "Review added successfully!");
                     res.redirect("/products/" + product._id)
                 }            
             });
@@ -50,71 +40,63 @@ router.post("/", function(req, res) {
     })
 });
 
+router.post("/", function(req, res) {
+    Profile.findById(req.params.id, function(err, product) {
+        if(err) {
+            console.log(err);
+            res.redirect("/profiles");
+        } else {
+            Review.create(req.body.review, function(err, review) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    // Add Username to review
+                    review.author.id = req.user._id;
+                    review.author.username = req.user.username;
+                    review.save();
+                    product.reviews.push(review);
+                    product.save();
+                    req.flash("success", "Review added successfully!");
+                    res.redirect("/profiles/" + product._id)
+                }            
+            });
+        }
+    })
+});
 
 
 // Edit
-router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findById(req.params.comment_id, function(err, foundComment) {
+router.get("/:review_id/edit", middleware.checkReviewOwnership, function(req, res) {
+    Review.findById(req.params.review_id, function(err, foundReview) {
         if(err) {
             res.redirect("back");
         } else {
-            res.render("comments/edit", {product_id: req.params.id, comment: foundComment});
+            res.render("reviews/edit", {product_id: req.params.id, review: foundReview});
         }
     });
 });
 
-router.get("/:comment_id/edit1", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findById(req.params.comment_id, function(err, foundComment) {
-        if(err) {
-            res.redirect("back");
-        } else {
-            res.render("comments/edit1", {event_id: req.params.id, comment: foundComment});
-        }
-    });
-});
 
 // Update
-router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
+router.put("/:review_id", middleware.checkReviewOwnership, function(req, res) {
+    Review.findByIdAndUpdate(req.params.review_id, req.body.review, function(err, updatedReview) {
         if(err) {
             res.redirect("back");
         } else {
-            req.flash("success", "Comment edited successfully!");
+            req.flash("success", "Review edited successfully!");
             res.redirect("/products/" + req.params.id);
-        }
-    });
-});
-
-router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
-        if(err) {
-            res.redirect("back");
-        } else {
-            req.flash("success", "Comment edited successfully!");
-            res.redirect("/events/" + req.params.id);
         }
     });
 });
 
 // Delete
-router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findByIdAndRemove(req.params.comment_id, function(err) {
+router.delete("/:review_id", middleware.checkReviewOwnership, function(req, res) {
+    Review.findByIdAndRemove(req.params.review_id, function(err) {
         if(err) {
             res.redirect("back");
         } else {
-            req.flash("success", "Comment deleted successfully!");
+            req.flash("success", "review deleted successfully!");
             res.redirect("/products/" + req.params.id);
-        }
-    });
-});
-
-router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
-    Comment.findByIdAndRemove(req.params.comment_id, function(err) {
-        if(err) {
-            res.redirect("back");
-        } else {
-            req.flash("success", "Comment deleted successfully!");
-            res.redirect("/events/" + req.params.id);
         }
     });
 });
